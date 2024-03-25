@@ -77,44 +77,6 @@ void selectPassengersByAgeRange(const std::vector<Passenger>& passengers) {
 
 
 
-//std::vector<Passenger> loadPassengers(const std::string& filename) {
-//    std::vector<Passenger> passengers;
-//    std::ifstream file(filename);
-//
-//    if (!file) {
-//        std::cerr << "Failed to open " << filename << std::endl;
-//        return passengers; // Early return if file cannot be opened
-//    }
-//
-//
-//    std::string line;
-//
-//    // Skip the header
-//    std::getline(file, line);
-//
-//    while (std::getline(file, line)) {
-//        std::istringstream s(line);
-//        std::string field, name, sex, embarked;
-//        int age;
-//        bool survived;
-//        // Assuming CSV format: name,sex,age,survived,embarked
-//        std::getline(s, name, ',');
-//        std::getline(s, sex, ',');
-//        std::getline(s, field, ',');
-//        age = std::stoi(field);
-//        std::getline(s, field, ',');
-//        survived = field == "1";
-//        std::getline(s, embarked, ',');
-//
-//        passengers.emplace_back(name, sex, age, survived, embarked);
-//    }
-//
-//    return passengers;
-//
-//}
-
-
-
 std::vector<std::string> parseCSVLine(const std::string& line) {
     std::vector<std::string> result;
     std::istringstream stream(line);
