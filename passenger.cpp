@@ -2,29 +2,22 @@
 // Created by jack on 25/3/24.
 //
 
-#include "Passenger.h"
-#include <iostream>
+#include "passenger.h"
 
-Passenger::Passenger(std::string name, std::string sex, int age, bool survived, std::string embarked)
-        : name(name), sex(sex), age(age), survived(survived), embarked(embarked) {}
+Passenger::Passenger(int id, bool survived, int pclass, const std::string& name, const std::string& sex, int age,
+                     int sibSp, int parch, const std::string& ticket, double fare, const std::string& cabin, const std::string& embarked)
+        : passengerId(id), survived(survived), pclass(pclass), name(name), sex(sex), age(age),
+          sibSp(sibSp), parch(parch), ticket(ticket), fare(fare), cabin(cabin), embarked(embarked) {}
 
+int Passenger::getPassengerId() const { return passengerId; }
+bool Passenger::getSurvived() const { return survived; }
+int Passenger::getPclass() const { return pclass; }
 std::string Passenger::getName() const { return name; }
 std::string Passenger::getSex() const { return sex; }
 int Passenger::getAge() const { return age; }
-bool Passenger::getSurvived() const { return survived; }
+int Passenger::getSibSp() const { return sibSp; }
+int Passenger::getParch() const { return parch; }
+std::string Passenger::getTicket() const { return ticket; }
+double Passenger::getFare() const { return fare; }
+std::string Passenger::getCabin() const { return cabin; }
 std::string Passenger::getEmbarked() const { return embarked; }
-
-void Passenger::setName(const std::string& newName) { name = newName; }
-void Passenger::setSex(const std::string& newSex) { sex = newSex; }
-void Passenger::setAge(int newAge) { age = newAge; }
-void Passenger::setSurvived(bool newSurvived) { survived = newSurvived; }
-void Passenger::setEmbarked(const std::string& newEmbarked) { embarked = newEmbarked; }
-
-void Passenger::displayInfo() const {
-    std::cout << "Name: " << name << "\nSex: " << sex << "\nAge: " << age
-              << "\nSurvived: " << (survived ? "Yes" : "No") << "\nEmbarked: " << embarked << std::endl;
-}
-
-bool Passenger::isOlderThan(const Passenger& other) const {
-    return this->age > other.age;
-}

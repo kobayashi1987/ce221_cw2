@@ -2,36 +2,43 @@
 // Created by jack on 25/3/24.
 //
 
-#ifndef _PASSENGER_H_
-#define _PASSENGER_H_
+#ifndef PASSENGER_H
+#define PASSENGER_H
 
 #include <string>
 
 class Passenger {
 public:
-    Passenger(std::string name, std::string sex, int age, bool survived, std::string embarked);
+    Passenger(int id, bool survived, int pclass, const std::string& name, const std::string& sex, int age,
+              int sibSp, int parch, const std::string& ticket, double fare, const std::string& cabin, const std::string& embarked);
 
+    // Getters
+    int getPassengerId() const;
+    bool getSurvived() const;
+    int getPclass() const;
     std::string getName() const;
     std::string getSex() const;
     int getAge() const;
-    bool getSurvived() const;
+    int getSibSp() const;
+    int getParch() const;
+    std::string getTicket() const;
+    double getFare() const;
+    std::string getCabin() const;
     std::string getEmbarked() const;
 
-    void setName(const std::string& newName);
-    void setSex(const std::string& newSex);
-    void setAge(int newAge);
-    void setSurvived(bool newSurvived);
-    void setEmbarked(const std::string& newEmbarked);
-
-    void displayInfo() const;
-    bool isOlderThan(const Passenger& other) const;
-
 private:
+    int passengerId;
+    bool survived;
+    int pclass;
     std::string name;
     std::string sex;
     int age;
-    bool survived;
+    int sibSp;
+    int parch;
+    std::string ticket;
+    double fare;
+    std::string cabin;
     std::string embarked;
 };
 
-#endif // _PASSENGER_H_
+#endif // PASSENGER_H
