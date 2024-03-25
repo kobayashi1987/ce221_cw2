@@ -7,6 +7,8 @@
 #include <string>
 #include <algorithm>
 
+#include <stdexcept> // For std::runtime_error
+
 void displaySampleData(const std::vector<Passenger>& passengers);
 
 
@@ -16,32 +18,38 @@ void showPassengersByEmbarkedType(const std::vector<Passenger>& passengers) {
     std::cout << "Enter embarked type (C = Cherbourg; Q = Queenstown; S = Southampton): ";
     std::cin >> type;
     for (const auto& passenger : passengers) {
-        if (passenger.getEmbarked()[0] == type) { // Simple check; adjust as necessary
-            std::cout << passenger.getName() << " - " << passenger.getEmbarked() << std::endl;
+        if (passenger.getEmbarked()[0] == type) {
+            std::cout << "Passenger ID: " << passenger.getPassengerId()
+                      << ", Name: " << passenger.getName()
+                      << ", Class: " << passenger.getPclass() << std::endl;
         }
     }
 }
 
+
 void displaySurvivalStatistics(const std::vector<Passenger>& passengers) {
-    int survived[2] = {0, 0}; // Index 0 for males, 1 for females
+    int survivedCount[2] = {0, 0}; // 0 for male, 1 for female
     for (const auto& passenger : passengers) {
         if (passenger.getSurvived()) {
-            if (passenger.getSex() == "male") survived[0]++;
-            else if (passenger.getSex() == "female") survived[1]++;
+            if (passenger.getSex() == "male") survivedCount[0]++;
+            else if (passenger.getSex() == "female") survivedCount[1]++;
         }
     }
-    std::cout << "Survived: Males = " << survived[0] << ", Females = " << survived[1] << std::endl;
+    std::cout << "Survivors: Males = " << survivedCount[0] << ", Females = " << survivedCount[1] << std::endl;
 }
+
 
 void searchPassengerByName(const std::vector<Passenger>& passengers) {
     std::string searchTerm;
     std::cout << "Enter name or part of name to search: ";
-    std::cin.ignore(); // To clear the newline character from the stream
+    std::cin.ignore(); // Ignore the newline left in the input stream
     std::getline(std::cin, searchTerm);
 
     for (const auto& passenger : passengers) {
         if (passenger.getName().find(searchTerm) != std::string::npos) {
-            std::cout << passenger.getName() << std::endl;
+            std::cout << "Passenger ID: " << passenger.getPassengerId()
+                      << ", Name: " << passenger.getName()
+                      << ", Survived: " << (passenger.getSurvived() ? "Yes" : "No") << std::endl;
         }
     }
 }
@@ -55,7 +63,10 @@ void selectPassengersByAgeRange(const std::vector<Passenger>& passengers) {
 
     for (const auto& passenger : passengers) {
         if (passenger.getAge() >= startAge && passenger.getAge() <= endAge) {
-            std::cout << passenger.getName() << " - Age: " << passenger.getAge() << std::endl;
+            std::cout << "Passenger ID: " << passenger.getPassengerId()
+                      << ", Name: " << passenger.getName()
+                      << ", Age: " << passenger.getAge()
+                      << ", Survived: " << (passenger.getSurvived() ? "Yes" : "No") << std::endl;
         }
     }
 }
@@ -104,48 +115,71 @@ void selectPassengersByAgeRange(const std::vector<Passenger>& passengers) {
 
 
 
+std::vector<std::string> parseCSVLine(const std::string& line) {
+    std::vector<std::string> result;
+    std::istringstream stream(line);
+    std::string field;
+    char delim = ',';
+
+    while (stream.good()) {
+        std::getline(stream, field, delim);
+        size_t start_quote = field.find_first_of('"');
+        if (start_quote != std::string::npos) {
+            // Concatenate until we find the closing quote
+            std::string temp;
+            while (std::getline(stream, temp, delim)) {
+                field += delim + temp;
+                if (temp.find_last_of('"') != std::string::npos) break;
+            }
+        }
+        // Remove potential quotes from the field
+        size_t start_pos = field.find_first_of('"');
+        while (start_pos != std::string::npos) {
+            size_t end_pos = field.find_first_of('"', start_pos + 1);
+            field.erase(end_pos, 1);
+            field.erase(start_pos, 1);
+            start_pos = field.find_first_of('"', start_pos + 1);
+        }
+        result.push_back(field);
+    }
+    return result;
+}
 
 std::vector<Passenger> loadPassengers(const std::string& filename) {
     std::vector<Passenger> passengers;
     std::ifstream file(filename);
-
-    if (!file) {
-        std::cerr << "Failed to open file: " << filename << std::endl;
-        return passengers; // Early exit if file cannot be opened
-    }
-
     std::string line;
-    // Skip the header line
-    if (!std::getline(file, line)) {
-        std::cerr << "Error or empty file: " << filename << std::endl;
-        return passengers; // Handle empty file or error during header read
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open file");
     }
+
+    // Skip the header
+    std::getline(file, line);
 
     while (std::getline(file, line)) {
-        if (line.empty()) continue; // Skip any empty lines
+        auto fields = parseCSVLine(line);
 
-        std::istringstream s(line);
-        std::string field, name, sex, embarked;
-        int age = 0;
-        bool survived = false;
-
-        try {
-            std::getline(s, name, ',');
-            std::getline(s, sex, ',');
-
-            std::getline(s, field, ',');
-            age = std::stoi(field); // Convert age from string to int
-
-            std::getline(s, field, ',');
-            survived = (field == "1"); // Convert survived status to bool
-
-            std::getline(s, embarked, ',');
-
-            passengers.emplace_back(name, sex, age, survived, embarked);
-        } catch (const std::exception& e) {
-            std::cerr << "Error parsing line: " << line << "\nException: " << e.what() << std::endl;
-            // Optionally, handle or skip the erroneous line
+        if (fields.size() < 12) {
+            // Handle error or incomplete line
+            continue;
         }
+
+        int passengerId = std::stoi(fields[0]);
+        bool survived = std::stoi(fields[1]) == 1;
+        int pclass = std::stoi(fields[2]);
+        std::string name = fields[3];
+        std::string sex = fields[4];
+        int age = fields[5].empty() ? -1 : std::stoi(fields[5]); // Assuming -1 for unknown ages
+        int sibSp = std::stoi(fields[6]);
+        int parch = std::stoi(fields[7]);
+        std::string ticket = fields[8];
+        double fare = std::stod(fields[9]);
+        std::string cabin = fields[10];
+        std::string embarked = fields[11];
+
+        passengers.emplace_back(passengerId, survived, pclass, name, sex, age,
+                                sibSp, parch, ticket, fare, cabin, embarked);
     }
 
     return passengers;
@@ -213,11 +247,19 @@ void displaySampleData(const std::vector<Passenger>& passengers) {
     // Display up to the first five passengers
     int count = 0;
     for (const auto& passenger : passengers) {
-        std::cout << "Passenger: " << passenger.getName()
+        std::cout << "Passenger ID: " << passenger.getPassengerId()
+                  << ", Name: " << passenger.getName()
                   << ", Sex: " << passenger.getSex()
                   << ", Age: " << passenger.getAge()
                   << ", Survived: " << (passenger.getSurvived() ? "Yes" : "No")
-                  << ", Embarked: " << passenger.getEmbarked() << std::endl;
+                  << ", Class: " << passenger.getPclass()
+                  << ", SibSp: " << passenger.getSibSp()
+                  << ", Parch: " << passenger.getParch()
+                  << ", Ticket: " << passenger.getTicket()
+                  << ", Fare: $" << passenger.getFare()
+                  << ", Cabin: " << passenger.getCabin()
+                  << ", Embarked: " << passenger.getEmbarked()
+                  << std::endl;
         if (++count == 5) break; // Only display the first 5
     }
 }
