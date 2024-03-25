@@ -61,6 +61,60 @@ build CMakeFiles/assignment02.dir/passenger.cpp.o: CXX_COMPILER__assignment02_un
   OBJECT_DIR = CMakeFiles/assignment02.dir
   OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
 
+build CMakeFiles/assignment02.dir/selectPassengersByAgeAndSurvival.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/selectPassengersByAgeAndSurvival.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/selectPassengersByAgeAndSurvival.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/searchPassengerByNameWithCaseOption.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/searchPassengerByNameWithCaseOption.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/searchPassengerByNameWithCaseOption.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/displaySurvivalByGenderAndAge.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/displaySurvivalByGenderAndAge.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/displaySurvivalByGenderAndAge.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/displaySampleData.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/displaySampleData.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/displaySampleData.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/showPassengersByEmbarkedType.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/showPassengersByEmbarkedType.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/showPassengersByEmbarkedType.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/displaySurvivalStatistics.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/displaySurvivalStatistics.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/displaySurvivalStatistics.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/searchPassengerByName.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/searchPassengerByName.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/searchPassengerByName.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/selectPassengersByAgeRange.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/selectPassengersByAgeRange.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/selectPassengersByAgeRange.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
+build CMakeFiles/assignment02.dir/loadPassengers.cpp.o: CXX_COMPILER__assignment02_unscanned_Debug /Users/jack/Desktop/project/clion/cpp/assignment02/loadPassengers.cpp || cmake_object_order_depends_target_assignment02
+  DEP_FILE = CMakeFiles/assignment02.dir/loadPassengers.cpp.o.d
+  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/assignment02.dir
+  OBJECT_FILE_DIR = CMakeFiles/assignment02.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target assignment02
@@ -69,7 +123,7 @@ build CMakeFiles/assignment02.dir/passenger.cpp.o: CXX_COMPILER__assignment02_un
 #############################################
 # Link the executable assignment02
 
-build assignment02: CXX_EXECUTABLE_LINKER__assignment02_Debug CMakeFiles/assignment02.dir/main.cpp.o CMakeFiles/assignment02.dir/passenger.cpp.o
+build assignment02: CXX_EXECUTABLE_LINKER__assignment02_Debug CMakeFiles/assignment02.dir/main.cpp.o CMakeFiles/assignment02.dir/passenger.cpp.o CMakeFiles/assignment02.dir/selectPassengersByAgeAndSurvival.cpp.o CMakeFiles/assignment02.dir/searchPassengerByNameWithCaseOption.cpp.o CMakeFiles/assignment02.dir/displaySurvivalByGenderAndAge.cpp.o CMakeFiles/assignment02.dir/displaySampleData.cpp.o CMakeFiles/assignment02.dir/showPassengersByEmbarkedType.cpp.o CMakeFiles/assignment02.dir/displaySurvivalStatistics.cpp.o CMakeFiles/assignment02.dir/searchPassengerByName.cpp.o CMakeFiles/assignment02.dir/selectPassengersByAgeRange.cpp.o CMakeFiles/assignment02.dir/loadPassengers.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk
   OBJECT_DIR = CMakeFiles/assignment02.dir
   POST_BUILD = :
