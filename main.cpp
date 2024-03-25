@@ -8,9 +8,24 @@
 #include <algorithm>
 
 #include <stdexcept> // For std::runtime_error
+#include <cctype>    // For std::tolower
+#include <map>
 
 void displaySampleData(const std::vector<Passenger>& passengers);
 
+void displaySurvivalByGenderAndAge(const std::vector<Passenger>& passengers);
+
+void searchPassengerByNameWithCaseOption(const std::vector<Passenger>& passengers);
+
+void selectPassengersByAgeAndSurvival(const std::vector<Passenger>& passengers);
+
+// Utility function to convert a string to lower case for case-insensitive comparison
+std::string toLowerCase(const std::string& str) {
+    std::string lowerCaseStr;
+    std::transform(str.begin(), str.end(), std::back_inserter(lowerCaseStr),
+                   [](unsigned char c){ return std::tolower(c); });
+    return lowerCaseStr;
+}
 
 
 void showPassengersByEmbarkedType(const std::vector<Passenger>& passengers) {
@@ -175,8 +190,12 @@ int main() {
                   << "2. Display survival / death statistics\n"
                   << "3. Search a passenger\n"
                   << "4. Select passengers based on ages\n"
-                  << "5. Exit program\n"
+                  << "5. Display Survival by gender and age (10 years in group)\n"
+                  << "6. Search Passenger By Name With Case Option\n"
+                  << "7. Select Passengers By Age And Survival\n"
+                  << "8. Exit program\n"
                   << "Enter your choice: ";
+
         std::cin >> choice;
 
         switch(choice) {
@@ -193,12 +212,21 @@ int main() {
                 selectPassengersByAgeRange(passengers);
                 break;
             case 5:
+                displaySurvivalByGenderAndAge(passengers);
+                break;
+            case 6:
+                searchPassengerByNameWithCaseOption(passengers);
+                break;
+            case 7:
+                selectPassengersByAgeAndSurvival(passengers);
+                break;
+            case 8:
                 std::cout << "Exiting program.\n";
                 break;
             default:
                 std::cout << "Invalid choice, please try again.\n";
         }
-    } while(choice != 5);
+    } while(choice != 8);
 
     return 0;
 }
@@ -223,5 +251,103 @@ void displaySampleData(const std::vector<Passenger>& passengers) {
                   << ", Embarked: " << passenger.getEmbarked()
                   << std::endl;
         if (++count == 5) break; // Only display the first 5
+    }
+}
+
+
+void displaySurvivalByGenderAndAge(const std::vector<Passenger>& passengers) {
+    // Using a map to hold counts for each gender and age range
+    // Key: Pair of string (gender) and int (age range)
+    // Value: Pair of int (survived count) and int (died count)
+    std::map<std::pair<std::string, int>, std::pair<int, int>> stats;
+
+    for (const auto& passenger : passengers) {
+        // Determine the age range
+        int ageRange = passenger.getAge() / 10;
+
+        // Increment the appropriate counter
+        auto key = std::make_pair(passenger.getSex(), ageRange);
+        if (passenger.getSurvived()) {
+            stats[key].first++; // Increment survived count
+        } else {
+            stats[key].second++; // Increment died count
+        }
+    }
+
+    // Display the results
+    for (const auto& entry : stats) {
+        std::string gender = entry.first.first;
+        int ageRange = entry.first.second;
+        int survivedCount = entry.second.first;
+        int diedCount = entry.second.second;
+
+        std::cout << "Gender: " << gender
+                  << ", Age Range: " << ageRange * 10 << "-" << (ageRange + 1) * 10 - 1
+                  << ", Survived: " << survivedCount
+                  << ", Died: " << diedCount << std::endl;
+    }
+}
+
+
+void searchPassengerByNameWithCaseOption(const std::vector<Passenger>& passengers) {
+    std::string searchTerm;
+    char caseOption;
+    std::cout << "Enter name or part of name to search: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+    std::getline(std::cin, searchTerm);
+
+    std::cout << "Do you want to search with strict casing? (Y/N): ";
+    std::cin >> caseOption;
+
+    bool isCaseSensitive = (caseOption == 'Y' || caseOption == 'y');
+
+    for (const auto& passenger : passengers) {
+        std::string passengerName = passenger.getName();
+
+        // If case-insensitive search is selected, convert both search term and passenger name to lower case
+        if (!isCaseSensitive) {
+            passengerName = toLowerCase(passengerName);
+            searchTerm = toLowerCase(searchTerm);
+        }
+
+        if (passengerName.find(searchTerm) != std::string::npos) {
+            std::cout << "Passenger ID: " << passenger.getPassengerId()
+                      << ", Name: " << passenger.getName()
+                      << ", Survived: " << (passenger.getSurvived() ? "Yes" : "No") << std::endl;
+        }
+    }
+}
+
+
+void selectPassengersByAgeAndSurvival(const std::vector<Passenger>& passengers) {
+    int startAge, endAge;
+    char survivedInput;
+    bool survived;
+
+    std::cout << "Enter start age: ";
+    std::cin >> startAge;
+    std::cout << "Enter end age: ";
+    std::cin >> endAge;
+    std::cout << "Survived (Y/N): ";
+    std::cin >> survivedInput;
+
+    survived = (survivedInput == 'Y' || survivedInput == 'y');
+
+    for (const auto& passenger : passengers) {
+        if (passenger.getAge() >= startAge && passenger.getAge() <= endAge && passenger.getSurvived() == survived) {
+            std::cout << "Passenger ID: " << passenger.getPassengerId()
+                      << ", Name: " << passenger.getName()
+                      << ", Sex: " << passenger.getSex()
+                      << ", Age: " << passenger.getAge()
+                      << ", Survived: " << (passenger.getSurvived() ? "Yes" : "No")
+                      << ", Class: " << passenger.getPclass()
+                      << ", SibSp: " << passenger.getSibSp()
+                      << ", Parch: " << passenger.getParch()
+                      << ", Ticket: " << passenger.getTicket()
+                      << ", Fare: $" << passenger.getFare()
+                      << ", Cabin: " << passenger.getCabin()
+                      << ", Embarked: " << passenger.getEmbarked()
+                      << std::endl;
+        }
     }
 }
